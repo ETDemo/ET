@@ -12,6 +12,7 @@ namespace ET
 
 		public void Start()
 		{
+			//LCM:Play模式运行时，只有刚开始的时候会判断 Define.EnableCodes ，Play模式运行之后对 ENABLE_CODES 的修改无意义
 			if (Define.EnableCodes)
 			{
 				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
@@ -61,6 +62,8 @@ namespace ET
 			start.Run();
 		}
 
+		//LCM:通过以下代码发现，如果是本地模式，使用的是原生c#的热重载，但是并没有更新 EventSystem 里的类型记录
+		//LCM：甚至，如果是本地模式，调用这个方法还可能出错，因为读取了不希望读取的 codes 资源文件
 		// 热重载调用该方法
 		public void LoadHotfix()
 		{
