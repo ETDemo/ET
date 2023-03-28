@@ -34,6 +34,7 @@ namespace ET
 			
 			ETTask.ExceptionHandler += Log.Error;
 
+			//LCM：注意这里，Codeloader是在以上单例注册之后才注册的，所以之前注册的单例属于框架代码，无法热更
 			Game.AddSingleton<CodeLoader>().Start();
 		}
 
@@ -46,6 +47,7 @@ namespace ET
 		{
 			Game.LateUpdate();
 			Game.FrameFinishUpdate();
+			//LCM：实际上Game还有 WaitFrameFinish() 异步方法，所以ET7的游戏循环里实际有4个阶段
 		}
 
 		private void OnApplicationQuit()
