@@ -21,6 +21,10 @@ namespace ET
 
         private static readonly Queue<ETTask> queue = new Queue<ETTask>();
 
+        //LCM:使用对象池，必须要在await之后将对改 EtTask 的引用设置为null
+        //LCM:因为当ETTask被放回池中的时候，其状态被设置为了Pending（这样从池中取出也默认是Pending状态）
+        //LCM:所以操作池中的 EtTask 会导致报错 。
+        //LCM:再次操作是指: await -> GetResult() 或 setResult()
         /// <summary>
         /// 请不要随便使用ETTask的对象池，除非你完全搞懂了ETTask!!!
         /// 假如开启了池,await之后不能再操作ETTask，否则可能操作到再次从池中分配出来的ETTask，产生灾难性的后果
@@ -74,6 +78,7 @@ namespace ET
         [DebuggerHidden]
         public void Coroutine()
         {
+            //LCM: ETVoid.Coroutine() = Do Nothing
             InnerCoroutine().Coroutine();
         }
 
@@ -93,16 +98,20 @@ namespace ET
             }
         }
 
+        //LCM:在c#开发者的解释里，UnsafeOnCompleted与OnCompleted的功能完全一致
+        //LCM:但是区别在于 UnsafeOnCompleted 的期望是只由异步系统调用，OnCompleted的期望是开发者可以调用（虽然不会有人轻易调用）
+        //LCM:因为是Public方法，所以需要添加特别特性才能实现限制（由编辑器的分析器来报错）
+        //LCM:如果实现了 ICriticalNotifyCompletion ，那么异步系统会调用UnsafeOnCompleted，否则异步系统会调用OnCompleted
         [DebuggerHidden]
         public void UnsafeOnCompleted(Action action)
         {
             if (this.state != AwaiterStatus.Pending)
             {
-                action?.Invoke();
+                action?.Invoke();   //LCM:回调
                 return;
             }
 
-            this.callback = action;
+            this.callback = action;  //LCM:MoveNext
         }
 
         [DebuggerHidden]
@@ -111,6 +120,7 @@ namespace ET
             this.UnsafeOnCompleted(action);
         }
 
+        //LCM: async/await 系统调用，不得擅自调用，否则就重复调用了
         [DebuggerHidden]
         public void GetResult()
         {
@@ -130,6 +140,7 @@ namespace ET
             }
         }
 
+        //LCM: 只能调用一次
         [DebuggerHidden]
         public void SetResult()
         {
@@ -145,6 +156,7 @@ namespace ET
             c?.Invoke();
         }
 
+        //LCM: 只能调用一次
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void SetException(Exception e)
