@@ -4,6 +4,7 @@
 	{
 		public const string BuildOutputDir = "./Temp/Bin/Debug";
 
+		//LCM:举例: 加载assetbundle包时，是否采用异步模式
 #if UNITY_EDITOR && !ASYNC
 		public static bool IsAsync = false;
 #else
@@ -16,12 +17,14 @@
         public static bool IsEditor = false;
 #endif
 		
+		//LCM： ENABLE_CODES 的目的在于编辑器可以访问热更逻辑代码
 #if ENABLE_CODES
 		public static bool EnableCodes = true;
 #else
         public static bool EnableCodes = false;
 #endif
 		
+		//LCM： ENABLE_VIEW 的目的在于编辑器可以显示Entity的层级
 #if ENABLE_VIEW
 		public static bool EnableView = true;
 #else
