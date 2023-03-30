@@ -18,6 +18,7 @@ namespace ET
 				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
 				if (globalConfig.CodeMode != CodeMode.ClientServer)
 				{
+					//LCM:其实和ClientSever无关，真正的约束是 只能是编辑器模式，因为Codes代码平台是editor，不会被打包，所以打包后只能采取热更代码的方式
 					throw new Exception("ENABLE_CODES mode must use ClientServer code mode!");
 				}
 				

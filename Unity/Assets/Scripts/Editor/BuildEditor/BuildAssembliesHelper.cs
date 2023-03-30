@@ -102,8 +102,11 @@ namespace ET
             BuildAssembliesHelper.BuildMuteAssembly("Hotfix", codes, new[] { Path.Combine(Define.BuildOutputDir, "Model.dll") }, codeOptimization,
                 globalConfig.CodeMode);
 
+            //LCM: AssetBundle
             File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"), Path.Combine(CodeDir, $"Hotfix.dll.bytes"), true);
             File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"), Path.Combine(CodeDir, $"Hotfix.pdb.bytes"), true);
+            //LCM: Temp/Bin/Debug 
+            //LCM: 貌似和之前说的Unity傻吊优化相关，名称不变就视为未更新，那编译 Mode 为什么不改名呢？
             File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"), Path.Combine(Define.BuildOutputDir, $"{logicFile}.dll"), true);
             File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"), Path.Combine(Define.BuildOutputDir, $"{logicFile}.pdb"), true);
             Debug.Log("copy Hotfix.dll to Bundles/Code success!");

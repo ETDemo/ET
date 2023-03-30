@@ -7,10 +7,21 @@ using System.Text;
 
 namespace ET
 {
+    /* LCM：
+     * Codes里的程序集平台都是Editor （打包时不会包含）
+     * 在编辑器里： 所以 当 ENABLE_CODES 开启的时候，Empty里的程序集没有引用Codes里的脚本，所以一直是以编辑器模式运行。
+     * 在编辑器里： 当 ENABLE_CODES 未开启的时候，Empty里的程序集会引用Codes里的脚本。所以Codes里的代码千万不要引用Editor的命名空间。
+     * 要用Empty来给Codes套壳，目的是为了既可以编辑器模式访问热更代码（ENABLE_CODES启用不启用都可以访问）， 又可以打包的时候不包含热更代码。
+     * 热更代码编译 的时候也是直接从Codes里引用脚本的，所以Empty里面不要有脚本。
+     * 因为Codes的平台是Editor，所以即使是本地模式打包，也要采取读取热更代码的方式 。
+     * 可是这样导致一个问题，就是Codes引用的额外程序集，Empty必须要同步才行。
+     */
     public class OnGenerateCSProjectProcessor: AssetPostprocessor
     {
+        //LCM:这个只是在Unity编辑器资源更新时调用，打包 的时候不会调用
         public static string OnGeneratedCSProject(string path, string content)
         {
+            Debug.Log(path);
             //LCM: Assets/Scripts/Core 核心框架代码 （非热更代码）
             if (path.EndsWith("Unity.Core.csproj"))
             {
