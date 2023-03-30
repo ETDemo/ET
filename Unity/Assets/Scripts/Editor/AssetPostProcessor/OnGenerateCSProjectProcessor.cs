@@ -11,13 +11,20 @@ namespace ET
     {
         public static string OnGeneratedCSProject(string path, string content)
         {
+            Debug.Log(path);
+            //LCM: Assets/Scripts/Core 核心框架代码 （非热更代码）
             if (path.EndsWith("Unity.Core.csproj"))
             {
                 return GenerateCustomProject(path, content);
             }
 
+            //LCM: Assets/Scripts/Codes ET内置代码（网络，demo，ui等等） （可热更）
             if (Define.EnableCodes)
             {
+                //LCM: Unity 正常（本地模式） 编译 Assets/Scripts/Codes 里的代码 （内置热更程序集）
+                //LCM：此时 Unity 正常（本地模式） 编译 Assets/Scripts/Empty  （非内置热更程序集）
+                //LCM: 编辑器可访问 非内置 热更程序集
+                //LCM: 这样终于可以将 内置代码 与 自定义代码 区分开来
                 if (path.EndsWith("Unity.Hotfix.Codes.csproj"))
                 {
                     content = GenerateCustomProject(path, content);
@@ -40,11 +47,14 @@ namespace ET
             }
             else
             {
+                //LCM: Unity 正常（本地模式） 编译Assets/Scripts/Codes里的代码 （内置热更程序集）
+                //LCM: 去除 Assets/Scripts/Empty 里的Empty脚本与asmdef，这样Unity就不会编译空文件夹 （非热更程序集）
                 if (path.EndsWith("Unity.Hotfix.csproj"))
                 {
                     content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\Hotfix\\Empty.cs\" />", string.Empty);
                     content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\Hotfix\\Unity.Hotfix.asmdef\" />", string.Empty);
 
+                    //LCM: link: “（根文件夹）文件匹配模板 （递归匹配）文件全路径的格式化串”
                     content = GenerateCustomProject(path, content,
                         @"Assets\Scripts\Codes\Hotfix\**\*.cs %(RecursiveDir)%(FileName)%(Extension)");
                 }
@@ -61,6 +71,8 @@ namespace ET
                 {
                     content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\Model\\Empty.cs\" />", string.Empty);
                     content = content.Replace("<None Include=\"Assets\\Scripts\\Empty\\Model\\Unity.Model.asmdef\" />", string.Empty);
+                    
+                    //LCM:这里要把Mode拆开是因为防止Generate文件夹里出现定义冲突 （最终把 client 和 server的代码都包含了）
                     content = GenerateCustomProject(path, content,
                         @"Assets\Scripts\Codes\Model\Server\**\*.cs Server\%(RecursiveDir)%(FileName)%(Extension)",
                         @"Assets\Scripts\Codes\Model\Client\**\*.cs Client\%(RecursiveDir)%(FileName)%(Extension)",
@@ -88,6 +100,7 @@ namespace ET
 
             var rootNode = newDoc.GetElementsByTagName("Project")[0];
 
+            //LCM:新的程序集引用指定文件夹里的所有脚本
             XmlElement itemGroup = newDoc.CreateElement("ItemGroup", newDoc.DocumentElement.NamespaceURI);
             foreach (var s in links)
             {
@@ -102,6 +115,7 @@ namespace ET
                 itemGroup.AppendChild(compile);
             }
 
+            //LCM:设置（代码）分析器（用于代码规范检查）
             var projectReference = newDoc.CreateElement("ProjectReference", newDoc.DocumentElement.NamespaceURI);
             projectReference.SetAttribute("Include", @"..\Share\Analyzer\Share.Analyzer.csproj");
             projectReference.SetAttribute("OutputItemType", @"Analyzer");
