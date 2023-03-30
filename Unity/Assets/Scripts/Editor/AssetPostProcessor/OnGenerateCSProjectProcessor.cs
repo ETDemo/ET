@@ -11,7 +11,6 @@ namespace ET
     {
         public static string OnGeneratedCSProject(string path, string content)
         {
-            Debug.Log(path);
             //LCM: Assets/Scripts/Core 核心框架代码 （非热更代码）
             if (path.EndsWith("Unity.Core.csproj"))
             {
