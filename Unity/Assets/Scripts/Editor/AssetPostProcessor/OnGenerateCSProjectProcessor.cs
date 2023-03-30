@@ -21,10 +21,10 @@ namespace ET
             //LCM: Assets/Scripts/Codes ET内置代码（网络，demo，ui等等） （可热更）
             if (Define.EnableCodes)
             {
-                //LCM: Unity 正常（本地模式） 编译 Assets/Scripts/Codes 里的代码 （内置热更程序集）
-                //LCM：此时 Unity 正常（本地模式） 编译 Assets/Scripts/Empty  （非内置热更程序集）
-                //LCM: 编辑器可访问 非内置 热更程序集
-                //LCM: 这样终于可以将 内置代码 与 自定义代码 区分开来
+                //LCM：此时 Unity 正常（本地模式） 编译 
+                //LCM:编译后，热更代码都在 .codes 结尾的程序集中
+                //LCM: Empty目录里的程序集也编译了，但是无热更代码
+                //LCM: 也就是说 ENABLE_CODES 启用状态下，只有 .codes程序集是有效的
                 if (path.EndsWith("Unity.Hotfix.Codes.csproj"))
                 {
                     content = GenerateCustomProject(path, content);
@@ -47,8 +47,9 @@ namespace ET
             }
             else
             {
-                //LCM: Unity 正常（本地模式） 编译Assets/Scripts/Codes里的代码 （内置热更程序集）
-                //LCM: 去除 Assets/Scripts/Empty 里的Empty脚本与asmdef，这样Unity就不会编译空文件夹 （非热更程序集）
+                //LCM: 此时 Unity 正常（本地模式） 编译  .codes
+                //LCM: 而Empty里的程序集 会引用 .codes程序集里的代码，也就是包含了 .codes （这样的，那么Empty和Codes程序集对其它的额外程序集的引用必须要同步啊！可是作者没处理啊？）
+                //LCM: 也就是说 ENABLE_CODES 未启用状态下， Empty里的程序集和 .codes程序集 都是有效的
                 if (path.EndsWith("Unity.Hotfix.csproj"))
                 {
                     content = content.Replace("<Compile Include=\"Assets\\Scripts\\Empty\\Hotfix\\Empty.cs\" />", string.Empty);
