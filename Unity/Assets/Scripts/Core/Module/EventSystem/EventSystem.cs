@@ -86,6 +86,7 @@ namespace ET
         private readonly Dictionary<Type, List<EventInfo>> allEvents = new();
         
         //LCM: IInvoke.type（参数类型） - Dic< invokeAttribute.type （分发类型）, IInvoke实例 （只有一个）>
+        //LCM: 可以理解 参数类型+分发类型 的组合 才是 实例的 key
         private Dictionary<Type, Dictionary<int, object>> allInvokes = new(); 
 
         //LCM:  EntityType - SystemType - List<Instance>        类型-系统类型-系统类型实例列表
