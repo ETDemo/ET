@@ -7,17 +7,21 @@ namespace ET
 {
     public class EventSystem: Singleton<EventSystem>, ISingletonUpdate, ISingletonLateUpdate
     {
+        //LCM: SystemType - List<Instance>   系统类型-系统类型实例列表
         private class OneTypeSystems
         {
             public readonly UnOrderMultiMap<Type, object> Map = new();
+            //LCM:系统所对应的 事件队列  参考：InstanceQueueIndex
             // 这里不用hash，数量比较少，直接for循环速度更快
             public readonly bool[] QueueFlag = new bool[(int)InstanceQueueIndex.Max];
         }
         
         private class TypeSystems
         {
+            //LCM: EntityType - SystemType - List<Instance>        类型-系统类型-系统类型实例列表
             private readonly Dictionary<Type, OneTypeSystems> typeSystemsMap = new();
 
+            //LCM:通过 类型 获取所有 系统类型-系统类型实例列表
             public OneTypeSystems GetOrCreateOneTypeSystems(Type type)
             {
                 OneTypeSystems systems = null;
@@ -32,6 +36,7 @@ namespace ET
                 return systems;
             }
 
+            //LCM:通过 类型 获取所有 系统类型-系统类型实例列表
             public OneTypeSystems GetOneTypeSystems(Type type)
             {
                 OneTypeSystems systems = null;
@@ -39,6 +44,7 @@ namespace ET
                 return systems;
             }
 
+            //LCM:通过 类型-系统类型 获取 系统类型实例列表   EntityType - SystemType - List<Instance>
             public List<object> GetSystems(Type type, Type systemType)
             {
                 OneTypeSystems oneTypeSystems = null;
@@ -60,6 +66,7 @@ namespace ET
         {
             public IEvent IEvent { get; }
             
+            //LCM:指定由哪种scene触发，如果是SceneType.None 则不限制
             public SceneType SceneType {get; }
 
             public EventInfo(IEvent iEvent, SceneType sceneType)
@@ -69,16 +76,22 @@ namespace ET
             }
         }
         
+        //LCM:所有类型      fullName-Type
         private readonly Dictionary<string, Type> allTypes = new();
 
+        //LCM:   baseAttribute的派生类型 - HashSet<被标记的的类型>
         private readonly UnOrderMultiMapSet<Type, Type> types = new();
 
+        //LCM: 记录所有的事件实例   事件类型 - List< (事件实例引用，sceneType) >
         private readonly Dictionary<Type, List<EventInfo>> allEvents = new();
         
+        //LCM: IInvoke.type（参数类型） - Dic< invokeAttribute.type （分发类型）, IInvoke实例 >
         private Dictionary<Type, Dictionary<int, object>> allInvokes = new(); 
 
+        //LCM:  EntityType - SystemType - List<Instance>        类型-系统类型-系统类型实例列表
         private TypeSystems typeSystems = new();
 
+        //LCM：由 InstanceQueueIndex 定义事件队列类型（顺序无关）
         private readonly Queue<long>[] queues = new Queue<long>[(int)InstanceQueueIndex.Max];
 
         public EventSystem()
@@ -114,10 +127,11 @@ namespace ET
 
             this.typeSystems = new TypeSystems();
 
+            //LCM:被 ObjectSystemAttribute 标记的类将会生成 实例，new()
             foreach (Type type in this.GetTypes(typeof (ObjectSystemAttribute)))
             {
                 object obj = Activator.CreateInstance(type);
-
+                
                 if (obj is ISystemType iSystemType)
                 {
                     OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
@@ -128,8 +142,13 @@ namespace ET
                         oneTypeSystems.QueueFlag[(int)index] = true;
                     }
                 }
+
+                //LCM: ObjectSystemAttribute 不一定指向系统，非系统也可以生成实例，感觉可以巧用这一点，（比如不由 Game 管理的 全局单例，只是举例，不要这样用）
+                //LCM: 其实下面的 EventAttribute 与 InvokeAttribute 都可以不需要，直接用ObjectSystemAttribute即可，仅判断实现的接口就行了
             }
 
+            //LCM: 被 EventAttribute 标记的类型也会生成 实例，new()
+            //LCM: EventAttribute 和 IEvent必须一起使用，最好的方式是继承 AEvent类
             this.allEvents.Clear();
             foreach (Type type in types[typeof (EventAttribute)])
             {
@@ -156,6 +175,8 @@ namespace ET
                 }
             }
 
+            //LCM: 被 InvokeAttribute 标记的类型也会生成 实例，new()
+            //LCM: InvokeAttribute 和 IInvoke 必须一起使用，最好的方式是继承 AInvokeHandler 类
             this.allInvokes = new Dictionary<Type, Dictionary<int, object>>();
             foreach (Type type in types[typeof (InvokeAttribute)])
             {
@@ -190,6 +211,7 @@ namespace ET
             }
         }
 
+        //LCM:获取 被指定 baseAttribute 标记的类型
         public HashSet<Type> GetTypes(Type systemAttributeType)
         {
             if (!this.types.ContainsKey(systemAttributeType))
@@ -210,6 +232,7 @@ namespace ET
             return this.allTypes[typeName];
         }
 
+        //LCM:这里可以发现 注册顺序就是调用顺序
         public void RegisterSystem(Entity component)
         {
             Type type = component.GetType();
@@ -621,6 +644,7 @@ namespace ET
             }
         }
 
+        //LCM:并没有同步等待，而是以协程的方式并行执行了
         public void Publish<T>(Scene scene, T a) where T : struct
         {
             List<EventInfo> iEvents;
@@ -648,6 +672,7 @@ namespace ET
             }
         }
         
+        //LCM: 最主要的区别：Invoke是同步方法，publis是异步方法（无法同步等待）
         // Invoke跟Publish的区别(特别注意)
         // Invoke类似函数，必须有被调用方，否则异常，调用者跟被调用者属于同一模块，比如MoveComponent中的Timer计时器，调用跟被调用的代码均属于移动模块
         // 既然Invoke跟函数一样，那么为什么不使用函数呢? 因为有时候不方便直接调用，比如Config加载，在客户端跟服务端加载方式不一样。比如TimerComponent需要根据Id分发
