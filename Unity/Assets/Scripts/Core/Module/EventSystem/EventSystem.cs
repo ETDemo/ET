@@ -85,7 +85,7 @@ namespace ET
         //LCM: 记录所有的事件实例   事件类型 - List< (事件实例引用，sceneType) >
         private readonly Dictionary<Type, List<EventInfo>> allEvents = new();
         
-        //LCM: IInvoke.type（参数类型） - Dic< invokeAttribute.type （分发类型）, IInvoke实例 >
+        //LCM: IInvoke.type（参数类型） - Dic< invokeAttribute.type （分发类型）, IInvoke实例 （只有一个）>
         private Dictionary<Type, Dictionary<int, object>> allInvokes = new(); 
 
         //LCM:  EntityType - SystemType - List<Instance>        类型-系统类型-系统类型实例列表
@@ -144,7 +144,7 @@ namespace ET
                 }
 
                 //LCM: ObjectSystemAttribute 不一定指向系统，非系统也可以生成实例，感觉可以巧用这一点，（比如不由 Game 管理的 全局单例，只是举例，不要这样用）
-                //LCM: 其实下面的 EventAttribute 与 InvokeAttribute 都可以不需要，直接用ObjectSystemAttribute即可，仅判断实现的接口就行了
+                //LCM: 下面的 EventAttribute 与 InvokeAttribute 虽然也会生成实例，但是他们有各自的参数
             }
 
             //LCM: 被 EventAttribute 标记的类型也会生成 实例，new()
