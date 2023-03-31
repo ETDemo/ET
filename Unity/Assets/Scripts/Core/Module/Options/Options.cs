@@ -11,8 +11,8 @@ namespace ET
         GameTool,
         ExcelExporter,
         Proto2CS,
-        BenchmarkClient,
-        BenchmarkServer,
+        BenchmarkClient,    //LCM:基准测试
+        BenchmarkServer,    //LCM:基准测试
     }
     
     public class Options: Singleton<Options>

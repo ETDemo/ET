@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
+    //LCM:类型，类型实例池，采用 new()
     public class ObjectPool: Singleton<ObjectPool>
     {
         private readonly Dictionary<Type, Queue<object>> pool = new Dictionary<Type, Queue<object>>();
