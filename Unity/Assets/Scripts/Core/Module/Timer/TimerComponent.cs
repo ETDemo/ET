@@ -5,9 +5,12 @@ namespace ET
     public enum TimerClass
     {
         None,
+        //LCM:一次性定时器
         OnceTimer,
+        //LCM:用于异步方法创建的定时器, 此时定时器参数为 ETTask
         OnceWaitTimer,
-        RepeatedTimer,
+        //LCM:重复定时器
+        RepeatedTimer,          
     }
 
     public class TimerAction
@@ -28,18 +31,20 @@ namespace ET
         
         public TimerClass TimerClass;
 
+        //LCM：定时器的 参数，注意 装箱/拆箱
         public object Object;
 
         public long StartTime;
 
         public long Time;
 
+        //LCM:这个Type其实是 InvokeType
         public int Type;
         
         public void Recycle()
         {
             this.Id = 0;
-            this.Object = null;
+            this.Object = null;     
             this.StartTime = 0;
             this.Time = 0;
             this.TimerClass = TimerClass.None;
@@ -55,12 +60,13 @@ namespace ET
 
     public class TimerComponent: Singleton<TimerComponent>, ISingletonUpdate
     {
+        //LCM：根据 key排序的字典   剩余延迟时间-timerID
         /// <summary>
         /// key: time, value: timer id
         /// </summary>
         private readonly MultiMap<long, long> TimeId = new();
 
-        private readonly Queue<long> timeOutTime = new();
+        private readonly Queue<long> timeOutTime = new(); 
 
         private readonly Queue<long> timeOutTimerIds = new();
 
@@ -69,7 +75,7 @@ namespace ET
         private long idGenerator;
 
         // 记录最小时间，不用每次都去MultiMap取第一个值
-        private long minTime = long.MaxValue;
+        private long minTime = long.MaxValue;   
 
         private long GetId()
         {
@@ -81,6 +87,7 @@ namespace ET
             return TimeHelper.ClientFrameTime();
         }
 
+        //LCM:将所有超时的Timer，一起调用（有序）
         public void Update()
         {
             if (this.TimeId.Count == 0)
@@ -88,14 +95,15 @@ namespace ET
                 return;
             }
 
-            long timeNow = GetNow();
+            long timeNow = GetNow();  //LCM:从这里可以看出，采用的是实际时间
 
-            if (timeNow < this.minTime)
+            //LCM:在addTimer时，会将minTime设置为最小的那个时间
+            if (timeNow < this.minTime)   
             {
                 return;
             }
 
-            foreach (KeyValuePair<long, List<long>> kv in this.TimeId)
+            foreach (KeyValuePair<long, List<long>> kv in this.TimeId)  
             {
                 long k = kv.Key;
                 if (k > timeNow)
@@ -184,7 +192,7 @@ namespace ET
             {
                 return false;
             }
-
+            //LCM:只是在timerAction里移除了，TimeId集合没做处理（有点复杂），但是不影响，只是会遍历，不会触发
             if (!this.timerActions.Remove(id, out TimerAction timerAction))
             {
                 return false;
@@ -263,6 +271,8 @@ namespace ET
             }
         }
 
+        // LCM:WaitTillAsync 的 timerClass 为 onceWaitTimer , timerType 为 0，无法自己实现 ATimer，传参固定为 ETTask 
+        // LCM:NewOnceTimer 的 timerClass 为 OnceTimer , 可以指定自定义 timerType, 自己实现 ATimer，参数自定义
         // 用这个优点是可以热更，缺点是回调式的写法，逻辑不连贯。WaitTillAsync不能热更，优点是逻辑连贯。
         // wait时间短并且逻辑需要连贯的建议WaitTillAsync
         // wait时间长不需要逻辑连贯的建议用NewOnceTimer
@@ -279,6 +289,7 @@ namespace ET
             return timer.Id;
         }
 
+        //LCM:每帧调用的定时器 ，理解为可自己注册取消的 Update
         public long NewFrameTimer(int type, object args)
         {
 #if DOTNET
@@ -302,7 +313,7 @@ namespace ET
             
             long timeNow = GetNow();
             TimerAction timer = TimerAction.Create(this.GetId(), TimerClass.RepeatedTimer, timeNow, time, type, args);
-
+            //LCM:AddTimer就 加到 TimeID里了
             // 每帧执行的不用加到timerId中，防止遍历
             this.AddTimer(timer);
             return timer.Id;
