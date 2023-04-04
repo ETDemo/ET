@@ -8,10 +8,10 @@ namespace ET
     public enum EntityStatus: byte
     {
         None = 0,
-        IsFromPool = 1,
-        IsRegister = 1 << 1,
-        IsComponent = 1 << 2,
-        IsCreated = 1 << 3,
+        IsFromPool = 1,             //LCM: 是否被池管理。 Creat 和 Dispose时会使用
+        IsRegister = 1 << 1,        //LCM: 是否被注册 ，被Root记录就是有效（Disposed 和 放回池中的Entity是无效的）
+        IsComponent = 1 << 2,      
+        IsCreated = 1 << 3,         //LCM: 正常调用有参构造函数出来的就是true， 反序列化出来的默认是false，此时会调用IDeserilizer接口进行反序列化
         IsNew = 1 << 4,
     }
 
@@ -195,11 +195,11 @@ namespace ET
                         Log.Error($"重复设置了Parent: {this.GetType().Name} parent: {this.parent.GetType().Name}");
                         return;
                     }
-                    this.parent.RemoveFromChildren(this);
+                    this.parent.RemoveFromChildren(this);    //LCM: 这里有个Bug!!! , 如果是改变 Component 的 Parent,原 Parent 没有移除该组件
                 }
                 
                 this.parent = value;
-                this.IsComponent = false;
+                this.IsComponent = false;   //LCM: 重置 Parent 之后 IsComponent 都会被设为 false
                 this.parent.AddToChildren(this);
                 this.Domain = this.parent.domain;
 
@@ -219,6 +219,8 @@ namespace ET
             }
         }
 
+        //LCM:在AddComponent的时候，就设置了parent，并且IsComponent == true
+        //LCM: 之后，再改变 Parent,IsComponent就会被设置为false，也就是说改变了parent之后，component就不再是组件了
         // 该方法只能在AddComponent中调用，其他人不允许调用
         [BsonIgnore]
         private Entity ComponentParent
@@ -353,8 +355,8 @@ namespace ET
 
         [BsonElement("Children")]
         [BsonIgnoreIfNull]
-        private HashSet<Entity> childrenDB;
-
+        private HashSet<Entity> childrenDB;  //LCM: 用于序列化
+        
         [BsonIgnore]
         private Dictionary<long, Entity> children;
 
@@ -370,7 +372,7 @@ namespace ET
         private void AddToChildren(Entity entity)
         {
             this.Children.Add(entity.Id, entity);
-            this.AddToChildrenDB(entity);
+            this.AddToChildrenDB(entity);       //LCM；每次Add，都会触发序列化，所以Add的代价似乎有些小高
         }
 
         private void RemoveFromChildren(Entity entity)
@@ -498,6 +500,7 @@ namespace ET
                 }
             }
 
+            //LCM:递归完子节点之后，最后才触发自己的 OnDestroy
             // 触发Destroy事件
             if (this is IDestroy)
             {
@@ -562,8 +565,8 @@ namespace ET
 
         private void AddToComponents(Entity component)
         {
-            this.Components.Add(component.GetType(), component);
-            this.AddToComponentsDB(component);
+            this.Components.Add(component.GetType(), component); 
+            this.AddToComponentsDB(component);           //LCM；每次Add，都会触发序列化，所以Add的代价似乎有些小高
         }
 
         private void RemoveFromComponents(Entity component)

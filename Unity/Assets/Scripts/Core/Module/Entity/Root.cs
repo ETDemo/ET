@@ -11,6 +11,7 @@ namespace ET
         // 管理所有的Entity
         private readonly Dictionary<long, Entity> allEntities = new();
         
+        //LCM： Root Entity
         public Scene Scene { get; private set; }
 
         public void Awake()
@@ -23,11 +24,12 @@ namespace ET
             this.Scene.Dispose();
         }
 
+        //LCM:不是public 方法 ,每个Entity注册的时候，都会被调用
         public void Add(Entity entity)
         {
             this.allEntities.Add(entity.InstanceId, entity);
         }
-        
+        //LCM:不是public 方法 ,每个Entity取消注册的时候，都会被调用
         public void Remove(long instanceId)
         {
             this.allEntities.Remove(instanceId);

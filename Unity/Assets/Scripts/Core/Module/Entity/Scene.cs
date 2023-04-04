@@ -32,7 +32,7 @@ namespace ET
             this.IsCreated = true;
             this.IsNew = true;
             this.Parent = parent;
-            this.Domain = this;
+            this.Domain = this;  //LCM:Scene的 Domain 就是自己
             this.IsRegister = true;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
@@ -47,7 +47,7 @@ namespace ET
             this.IsCreated = true;
             this.IsNew = true;
             this.Parent = parent;
-            this.Domain = this;
+            this.Domain = this; //LCM:Scene的 Domain 就是自己
             this.IsRegister = true;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
@@ -75,6 +75,7 @@ namespace ET
             {
                 if (value == null)
                 {
+                    //LCM：Scene的 parent默认是null ,所以 Scene 的Parent是可以为 null的
                     //this.parent = this;
                     return;
                 }
