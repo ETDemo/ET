@@ -6,6 +6,7 @@ namespace ET
     {
         private readonly int type;
         
+        //LCM : Dic<key,queue>
         private readonly Dictionary<long, CoroutineLockQueue> coroutineLockQueues = new Dictionary<long, CoroutineLockQueue>();
 
         public CoroutineLockQueueType(int type)

@@ -3,6 +3,7 @@ using System.Threading;
 
 namespace ET
 {
+    //LCM:协程锁超时处理
     [Invoke(TimerCoreInvokeType.CoroutineTimeout)]
     public class WaitCoroutineLockTimer: ATimer<WaitCoroutineLock>
     {
@@ -16,6 +17,9 @@ namespace ET
         }
     }
     
+    //LCM：对 ETTask<CoroutineLock> 的包装
+    //LCM:目的1 可能是为了防止 开发者自己忘记将 池中的 ETTask 置空
+    //LCM:目的2 添加了 IsDisposed() 方法，这个太有用了，可以判断排队任务是否还有效
     public class WaitCoroutineLock
     {
         public static WaitCoroutineLock Create()
