@@ -55,6 +55,7 @@ namespace ET.Client
             }
             else
             {
+                //LCM: using语句用完就卸
                 using (Root.Instance.Scene.AddComponent<ResourcesComponent>())
                 {
                     const string configBundleName = "config.unity3d";
