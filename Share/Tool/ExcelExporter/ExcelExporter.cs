@@ -56,14 +56,15 @@ namespace ET
 
         private const string ClientClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/Client/Config";
         // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
+        //LCM:服务器包含所有的客户端配置，所以 cs 和 s 文件夹的内容是一样的
         private const string ServerClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/Server/Config";
 
         private const string CSClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/ClientServer/Config";
-
+        //LCM:实际的保存路径
         private const string excelDir = "../Unity/Assets/Config/Excel/";
 
         private const string jsonDir = "../Config/Json/{0}/{1}";
-
+        //LCM:最后拷贝到unity里，好打资源包
         private const string clientProtoDir = "../Unity/Assets/Bundles/Config";
         private const string serverProtoDir = "../Config/Excel/{0}/{1}";
         private static Assembly[] configAssemblies = new Assembly[3];

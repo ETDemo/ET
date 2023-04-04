@@ -20,6 +20,7 @@ namespace ET
         [Option("AppType", Required = false, Default = AppType.Server, HelpText = "AppType enum")]
         public AppType AppType { get; set; }
 
+        //LCM: 通过命令行手动切换 启动配置 (仅服务器或测试才需要)
         [Option("StartConfig", Required = false, Default = "StartConfig/Localhost")]
         public string StartConfig { get; set; }
 

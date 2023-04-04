@@ -39,11 +39,13 @@ namespace ET.Client
                     "StartSceneConfigCategory", 
                     "StartZoneConfigCategory",
                 };
+                //LCM:编辑器直接加载的 .byte 文件 
                 foreach (Type configType in configTypes)
                 {
                     string configFilePath;
                     if (startConfigs.Contains(configType.Name))
                     {
+                        //LCM:这里对启动配置特殊处理，也就是 集合放在了一个文件夹里
                         configFilePath = $"../Config/Excel/{ct}/{Options.Instance.StartConfig}/{configType.Name}.bytes";    
                     }
                     else
