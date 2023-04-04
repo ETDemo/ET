@@ -50,6 +50,7 @@ namespace ET
         //LCM:私自不要调用这个方法，这不是个 public 方法，由 CoroutineLock.dispose()调用
         public void RunNextCoroutine(int coroutineLockType, long key, int level)
         {
+            //LCM:这里逻辑有误，不是一帧处理多少个，而是 一个队列在未间断的情况下 处理了多少次 带有锁的操作 （不是排队数量，是出队了多少次）
             // 一个协程队列一帧处理超过100个,说明比较多了,打个warning,检查一下是否够正常
             if (level == 100)
             {
