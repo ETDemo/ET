@@ -7,6 +7,7 @@ namespace ET
     [ChildOf]
     public sealed class Scene: Entity
     {
+        //LCM:Scene所属的 zone
         public int Zone
         {
             get;
