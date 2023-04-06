@@ -12,7 +12,7 @@ namespace ET
         IsRegister = 1 << 1,        //LCM: 是否被注册 ，被Root记录就是有效（Disposed 和 放回池中的Entity是无效的）
         IsComponent = 1 << 2,      
         IsCreated = 1 << 3,         //LCM: （就是判断是不是非序列化创建的）正常调用有参构造函数出来的就是true， 反序列化出来的默认是false，此时会调用IDeserilizer接口进行反序列化
-        IsNew = 1 << 4,             //LCM:（就是判断是不是非序列化创建的）正常调用有参构造函数出来的就是true， 反序列化出来的默认是false，用于回收 childrenDB 和 componentsDB 到池中
+        IsNew = 1 << 4,             //LCM:（就是判断是不是非序列化创建的）正常调用有参构造函数出来的就是true （创建时从池中获取的DB集合）， 反序列化出来的默认是false（反序列是一个非null的DB集合），用于回收 childrenDB 和 componentsDB 到池中。
     }
 
     public partial class Entity: DisposeObject
@@ -345,6 +345,8 @@ namespace ET
                     }
                 }
 
+                //LCM: 非正常创建的，调用反序列化接口
+                //LCM: 当子节点都反序列化完毕后，才反序列化自己
                 if (!this.IsCreated)
                 {
                     this.IsCreated = true;
