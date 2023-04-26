@@ -16,12 +16,13 @@ namespace ET
         // 不过这个问题并不大，因为客户端发送的消息是比较少的，如果实在需要，也可以修改这个方法，把outer的消息过滤掉。
         protected MemoryStream GetMemoryStream(object message)
         {
+            //LCM:如果与上次消息一致，就直接返回缓存，以减少序列化次数
             if (object.ReferenceEquals(lastMessageInfo.Message, message))
             {
                 Log.Debug($"message serialize cache: {message.GetType().Name}");
                 return lastMessageInfo.MemoryStream;
             }
-
+            //LCM:这里队消息进行了序列化
             (ushort _, MemoryStream stream) = MessageSerializeHelper.MessageToStream(message);
             this.lastMessageInfo = (message, stream);
             return stream;

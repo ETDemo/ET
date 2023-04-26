@@ -10,6 +10,12 @@ namespace ET
 		Accept,
 	}
 
+	/* LCM:
+    * ********__+
+    * *:ActorID
+    * _:opCode
+    * +:message 序列化内容，不定长
+    */
 	public struct Packet
 	{
 		public const int MinPacketSize = 2;
