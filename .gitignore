@@ -6,6 +6,8 @@
 *.pyc
 *.suo
 
+*.csproj
+
 .settings/
 .localhistory/
 Dbg/
