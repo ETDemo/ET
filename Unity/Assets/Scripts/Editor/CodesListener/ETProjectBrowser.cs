@@ -8,7 +8,7 @@ using UnityEditor.Build.Content;
 using UnityEngine;
 public class ETProjectBrowser : EditorWindow
 {
-    //[MenuItem("ET/ET Project")]
+    [MenuItem("ET/ET Project")]
     public static ETProjectBrowser Open()
     {
         var window = GetWindow<ETProjectBrowser>("ET Project");
