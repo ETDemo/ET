@@ -94,10 +94,17 @@ Publish/
 
 /Config/Excel/*
 /Config/Json/*
-/Unity/Assets/Bundles/Config/*
-/Unity/Assets/Scripts/Codes/Model/Generate/Client/Config
-/Unity/Assets/Scripts/Codes/Model/Generate/Client/Message
-/Unity/Assets/Scripts/Codes/Model/Generate/ClientServer/Config
-/Unity/Assets/Scripts/Codes/Model/Generate/ClientServer/Message
-/Unity/Assets/Scripts/Codes/Model/Generate/Server/Config
-/Unity/Assets/Scripts/Codes/Model/Generate/Server/Message
+/Unity/Assets/Bundles/Config/
+/Unity/Assets/Bundles/Config.meta
+/Unity/Assets/Scripts/Codes/Model/Generate/Client/Config/
+/Unity/Assets/Scripts/Codes/Model/Generate/Client/Config.meta
+/Unity/Assets/Scripts/Codes/Model/Generate/Client/Message/
+/Unity/Assets/Scripts/Codes/Model/Generate/Client/Message.meta
+/Unity/Assets/Scripts/Codes/Model/Generate/ClientServer/Config/
+/Unity/Assets/Scripts/Codes/Model/Generate/ClientServer/Config.meta
+/Unity/Assets/Scripts/Codes/Model/Generate/ClientServer/Message/
+/Unity/Assets/Scripts/Codes/Model/Generate/ClientServer/Message.meta
+/Unity/Assets/Scripts/Codes/Model/Generate/Server/Config/
+/Unity/Assets/Scripts/Codes/Model/Generate/Server/Config.meta
+/Unity/Assets/Scripts/Codes/Model/Generate/Server/Message/
+/Unity/Assets/Scripts/Codes/Model/Generate/Server/Message.meta
