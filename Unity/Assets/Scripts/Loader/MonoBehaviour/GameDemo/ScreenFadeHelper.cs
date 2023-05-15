@@ -7,6 +7,7 @@ namespace ET
 {
     public class ScreenFadeHelper: MonoBehaviour
     {
+        [SerializeField]
         private Volume volume;
         private Vignette vignette;
 
