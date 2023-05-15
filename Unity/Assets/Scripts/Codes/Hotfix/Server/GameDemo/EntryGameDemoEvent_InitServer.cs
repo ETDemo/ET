@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ET.GameDemo
+namespace ET.GameDemo.Server
 {
     [Event(SceneType.Process)]
     public class EntryGameDemoEvent_InitServer : AEvent<EventType. EntryGameDemoEvent_InitServer>

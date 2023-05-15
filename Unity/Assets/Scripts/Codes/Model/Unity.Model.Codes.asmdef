@@ -4,7 +4,9 @@
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
     ],
     "includePlatforms": [
         "Editor"

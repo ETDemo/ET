@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ET.GameDemo
+namespace ET.GameDemo.Server
 {
     public class RsaPrivate: Singleton<RsaPrivate>
     {

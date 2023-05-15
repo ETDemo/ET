@@ -4,7 +4,9 @@
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",
-        "HybridCLR.Runtime"
+        "HybridCLR.Runtime",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.RenderPipelines.Universal.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

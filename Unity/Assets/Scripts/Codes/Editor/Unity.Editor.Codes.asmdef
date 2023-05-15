@@ -9,7 +9,11 @@
         "Unity.ModelView.Codes",
         "Unity.HotfixView.Codes",
         "Unity.Editor",
-        "Unity.Loader"
+        "Unity.Loader",
+        "UnityEditor.UI",
+        "UnityEngine.UI",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
     ],
     "includePlatforms": [
         "Editor"
