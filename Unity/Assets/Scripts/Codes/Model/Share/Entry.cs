@@ -34,12 +34,13 @@
             MongoHelper.Init();
             ProtobufHelper.Init();
             
+            Game.AddSingleton<NetServices>();
             Game.AddSingleton<Root>();
-            //ToDo:黑屏
+            await Game.AddSingleton<ConfigComponent>().LoadAsync();
+            
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new GameDemo.EventType.EntryGameDemoEvent_InitShare());
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new GameDemo.EventType.EntryGameDemoEvent_InitServer());
             await EventSystem.Instance.PublishAsync(Root.Instance.Scene, new GameDemo.EventType.EntryGameDemoEvent_InitClient());
-            //ToDo:亮屏
         }
 
         private static async ETTask StartAsync()

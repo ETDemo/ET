@@ -9,10 +9,6 @@ namespace ET.GameDemo
     {
         protected override async ETTask Run(Scene scene, EventType.EntryGameDemoEvent_InitShare a)
         {
-            Game.AddSingleton<NetServices>();
-            
-            await Game.AddSingleton<ConfigComponent>().LoadAsync();
-            
             Game.AddSingleton<RsaPublic>();
             
             Root.Instance.Scene.AddComponent<NetThreadComponent>();
