@@ -61,11 +61,12 @@ namespace ET
         private const string CSClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/ClientServer/Config";
 
         private const string excelDir = "../Unity/Assets/Config/Excel/";
-
-        private const string jsonDir = "../Config/Json/{0}/{1}";
+        private const string serverJsonDir = "../Config/Json";
+        private const string jsonDir = serverJsonDir+"/{0}/{1}";
 
         private const string clientProtoDir = "../Unity/Assets/Bundles/Config";
-        private const string serverProtoDir = "../Config/Excel/{0}/{1}";
+        private const string serverExcelDir = "../Config/Excel";
+        private const string serverProtoDir = serverExcelDir+ "/{0}/{1}";
         private static Assembly[] configAssemblies = new Assembly[3];
 
         private static Dictionary<string, Table> tables = new Dictionary<string, Table>();
@@ -96,6 +97,13 @@ namespace ET
 
         public static void Export()
         {
+            //删除服务器端的配置
+            if(Directory.Exists(serverExcelDir))
+                Directory.Delete(serverExcelDir, true);
+            if(Directory.Exists(serverJsonDir))
+                Directory.Delete(serverJsonDir, true);
+            if (Directory.Exists(CSClassDir))
+                Directory.Delete(CSClassDir, true);
             try
             {
                 //防止编译时裁剪掉protobuf
