@@ -6,40 +6,52 @@ namespace ET.GameDemo
 {
     public class RsaPrivate: Singleton<RsaPrivate>
     {
-        public RSACryptoServiceProvider Provider;
+        private const int defaultConfigID = 1001;
 
-        public byte[] Encrypt(string value)
+        private RSA rsa;
+        private RSAEncryptionPadding padding;
+        private Encoding encoding;
+
+        public RsaPrivate()
         {
-            if (value == null) return Array.Empty<byte>();
-            return Provider.EncryptValue(Encoding.UTF8.GetBytes(value));
+            rsa = RSA.Create();
+            padding = RSAEncryptionPadding.Pkcs1;
+            encoding = Encoding.UTF8;
         }
 
-        public byte[] Decrypt(string value)
+        public override void Dispose()
         {
-            if (value == null) return Array.Empty<byte>();
-            return Provider.DecryptValue(Encoding.UTF8.GetBytes(value));
+            rsa.Dispose();
+            padding = null;
+            encoding = null;
         }
 
-        public byte[] Encrypt(byte[] value)
+        public byte[] Decrypt(string value, int configID = defaultConfigID)
         {
             if (value == null) return Array.Empty<byte>();
-
-            var all = RsaPrivateConfigCategory.Instance.GetAll();
-            var index = (int)(RandomGenerator.RandUInt32() % all.Count);
-            var key = all[index].Key;
-            Provider.FromXmlString(key);
-            return Provider.EncryptValue(value);
+            return this.Decrypt(StringToBytes(value), configID);
         }
 
-        public byte[] Decrypt(byte[] value)
+        public byte[] Decrypt(byte[] value, int configID = defaultConfigID)
+        {
+            if (value == null) return Array.Empty<byte>();
+            var cfg = RsaPrivateConfigCategory.Instance.Get(configID);
+            this.rsa.FromXmlString(cfg.Key);
+            return this.rsa.Decrypt(value, padding);
+        }
+
+        public string BytesToString(byte[] value)
+        {
+            if (value == null) return string.Empty;
+
+            return encoding.GetString(value);
+        }
+
+        public byte[] StringToBytes(string value)
         {
             if (value == null) return Array.Empty<byte>();
 
-            var all = RsaPrivateConfigCategory.Instance.GetAll();
-            var index = (int)(RandomGenerator.RandUInt32() % all.Count);
-            var key = all[index].Key;
-            Provider.FromXmlString(key);
-            return Provider.DecryptValue(value);
+            return encoding.GetBytes(value);
         }
     }
 }
