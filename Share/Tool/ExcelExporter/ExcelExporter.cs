@@ -572,6 +572,12 @@ namespace ET
                     value = value.Replace("\\", "\\\\");
                     value = value.Replace("\"", "\\\"");
                     return $"\"{value}\"";
+                    
+                case "bool":
+                    value = value.ToLower();
+                    if(value == "true")
+                        return "\"true\"";
+                    return "\"false\"";
                 default:
                     throw new Exception($"不支持此类型: {type}");
             }
