@@ -91,3 +91,6 @@ Publish/
 /Unity/Assets/Bundles/AotDlls.meta
 /Unity/HybridCLRData
 /Unity/Assembly-CSharp-firstpass.csproj
+
+/Config/
+#Unity/Assets/Scripts/Codes/Model/Generate/

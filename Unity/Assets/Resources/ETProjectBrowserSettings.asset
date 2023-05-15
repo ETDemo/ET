@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bfe7d53936a9d4694e2356f5b97304, type: 3}
   m_Name: ETProjectBrowserSettings
   m_EditorClassIdentifier: 
-  ListenFolderPath: ../Codes
+  ListenFolderPath: Assets/Scripts/Codes
