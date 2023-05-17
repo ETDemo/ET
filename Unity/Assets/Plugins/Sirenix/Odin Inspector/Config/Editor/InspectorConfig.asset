@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb8a20bb2eb9cc8498e57dc5b5284280, type: 3}
-  m_Name: EntityGenerator
+  m_Script: {fileID: 1137305049, guid: a4865f1ab4504ed8a368670db22f409c, type: 3}
+  m_Name: InspectorConfig
   m_EditorClassIdentifier: 
-  RootFolderType: 3
-  SubFolder: 
-  NameSpace: 
-  EntityName: 
-  Interfaces: 0
-  EntitySingleton: 0
+  enableOdinInInspector: 1
+  defaultEditorBehaviour: 11
+  processMouseMoveInInspector: 1
+  drawingConfig:
+    configs: []

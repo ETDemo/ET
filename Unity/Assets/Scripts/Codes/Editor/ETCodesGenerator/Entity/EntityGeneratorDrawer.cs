@@ -16,11 +16,11 @@ namespace ET.ETCodesGenerator.Entity
             //
             var eg = this.target as EntityGenerator;
 
-            // if (eg.EntitySingleton)
-            // {
-            //     eg.Interfaces |= EntityInterfaces.IAwake | EntityInterfaces.IDestroy;
-            //     EditorUtility.SetDirty(eg);
-            // }
+            if (eg.EntitySingleton && ((eg.Interfaces & EntityInterfaces.IAwake) == 0 || (eg.Interfaces & EntityInterfaces.IDestroy) == 0))
+            {
+                eg.Interfaces |= EntityInterfaces.IAwake | EntityInterfaces.IDestroy;
+                EditorUtility.SetDirty(eg);
+            }
 
             DrawMsg(this.msg, Color.yellow);
 
