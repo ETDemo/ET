@@ -10,7 +10,7 @@ namespace ET.ETCodesGenerator
 
         public static readonly string ModelViewFolder = CombinePath(CodesFolder, "ModelView");
 
-        public static readonly string HotfixFolder = CombinePath(CodesFolder, "HotfixVie");
+        public static readonly string HotfixFolder = CombinePath(CodesFolder, "Hotfix");
 
         public static readonly string HotfixViewFolder = CombinePath(CodesFolder, "HotfixView");
 
