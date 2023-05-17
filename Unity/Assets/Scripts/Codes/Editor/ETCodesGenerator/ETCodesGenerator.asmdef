@@ -1,0 +1,26 @@
+{
+    "name": "ETCodesGenerator",
+    "rootNamespace": "ET.ETCodesGenerator",
+    "references": [
+        "GUID:6e17cd4649ea94c0cb18f30a60b9b4b4",
+        "GUID:2d56d402361754240b71ad908a0879da",
+        "GUID:7d8c8789b4b09c048a09d38c44ad1d1f",
+        "GUID:efc2ca0b51ad54047b25b5c2eb4c19a1",
+        "GUID:98395eb17a7c633439d4cc0873eda2ed",
+        "GUID:343deaaf83e0cee4ca978e7df0b80d21",
+        "GUID:2bafac87e7f4b9b418d9448d219b01ab",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
