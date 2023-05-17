@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RootFolderType: 2
   SubFolderPath: GameDemo
-  NameSpace: 2
-  EntityName: 2
-  Interfaces: 6
-  EntitySingleton: 0
+  NameSpace: 9
+  EntityName: 9
+  Interfaces: 214
+  EntitySingleton: 1

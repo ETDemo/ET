@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using ET.Client;
+using ET.MyProject;
 using UnityEngine;
 
 namespace ET.GameDemo.Client
