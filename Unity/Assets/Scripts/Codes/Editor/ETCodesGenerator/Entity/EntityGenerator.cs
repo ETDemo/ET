@@ -1,4 +1,5 @@
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace ET.ETCodesGenerator.Entity
@@ -7,12 +8,15 @@ namespace ET.ETCodesGenerator.Entity
     public class EntityGenerator: ScriptableObject
     {
         public RootFolderType RootFolderType;
-        public string SubFolder;
+        [CodesSubFolder("$_ModelFolderPath")]
+        public string SubFolderPath;
         public string NameSpace = "ET.YouProjectName";
         public string EntityName;
         public EntityInterfaces Interfaces;
         public bool EntitySingleton;
 
+        private string _ModelFolderPath => RootFolderType.ToModelPath();
+        
         public void Generate()
         {
             var canGenerate = CanGenerate();
@@ -46,7 +50,7 @@ namespace ET.ETCodesGenerator.Entity
                 RootFolderType.ClientView => PathHelper.ClientModelViewFolder,
                 _ => throw new ArgumentOutOfRangeException()
             };
-            return string.IsNullOrEmpty(this.SubFolder)? $"{path}/{this.EntityName}" : $"{path}/{this.SubFolder}/{this.EntityName}";
+            return string.IsNullOrEmpty(this.SubFolderPath)? $"{path}/{this.EntityName}.cs" : $"{path}/{this.SubFolderPath}/{this.EntityName}.cs";
         }
 
         public string GetSystemFilePath()
@@ -59,7 +63,7 @@ namespace ET.ETCodesGenerator.Entity
                 RootFolderType.ClientView => PathHelper.ClientHotfixViewFolder,
                 _ => throw new ArgumentOutOfRangeException()
             };
-            return string.IsNullOrEmpty(this.SubFolder)? $"{path}/{this.EntityName}" : $"{path}/{this.SubFolder}/{this.EntityName}";
+            return string.IsNullOrEmpty(this.SubFolderPath)? $"{path}/{this.EntityName}.cs" : $"{path}/{this.SubFolderPath}/{this.EntityName}.cs";
         }
 
         private void GenerateEntity()

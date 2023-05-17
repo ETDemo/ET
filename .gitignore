@@ -92,6 +92,8 @@ Publish/
 /Unity/HybridCLRData
 /Unity/Assembly-CSharp-firstpass.csproj
 
+/Unity/Assets/Plugins/Sirenix/
+
 /Config/Excel/*
 /Config/Json/*
 /Unity/Assets/Bundles/Config/

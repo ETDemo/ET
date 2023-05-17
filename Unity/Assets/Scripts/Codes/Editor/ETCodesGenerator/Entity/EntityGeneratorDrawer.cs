@@ -1,11 +1,12 @@
 using System;
+using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
 
 namespace ET.ETCodesGenerator.Entity
 {
     [CustomEditor(typeof (EntityGenerator))]
-    internal class EntityGeneratorDrawer: Editor
+    internal class EntityGeneratorDrawer: OdinEditor
     {
         public string errorMsg = string.Empty;
         public string msg = string.Empty;
@@ -43,6 +44,7 @@ namespace ET.ETCodesGenerator.Entity
                 catch (Exception e)
                 {
                     errorMsg = e.Message;
+                    throw;
                 }
             }
 

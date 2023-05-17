@@ -4,7 +4,7 @@ namespace ET.ETCodesGenerator
 {
     public static class PathHelper
     {
-        public static readonly string CodesFolder = CombinePath(Application.dataPath, "Codes");
+        public static readonly string CodesFolder = CombinePath(Application.dataPath, "Scripts/Codes");
 
         public static readonly string ModelFolder = CombinePath(CodesFolder, "Model");
 
