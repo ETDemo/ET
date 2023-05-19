@@ -1,0 +1,37 @@
+using System;
+
+namespace @NAMESPACE@
+{
+    [FriendOf(typeof (@ENTITYNAME@))]
+    public static partial class @ENTITYNAME@System
+    {
+        @IAWAKE_BEGIN@private static void OnAwake(this @ENTITYNAME@ self)
+        {
+        }
+        @IAWAKE_END@@IUPDATE_BEGIN@private static void OnUpdate(this @ENTITYNAME@ self)
+        {
+        }
+        @IUPDATE_END@@ILATEUPDATE_BEGIN@private static void OnLateUpdate(this @ENTITYNAME@ self)
+        {
+        }
+        @ILATEUPDATE_END@@IDESTROY_BEGIN@private static void OnDestroy(this @ENTITYNAME@ self)
+        {
+        }
+        @IDESTROY_END@@ILOAD_BEGIN@private static void OnLoad(this @ENTITYNAME@ self)
+        {
+        }
+        @ILOAD_END@@IGETCOMPONENT_BEGIN@private static void OnGetComponent(this @ENTITYNAME@ self, Entity component)
+        {
+        }
+        @IGETCOMPONENT_END@@IADDCOMPONENT_BEGIN@private static void OnAddComponent(this @ENTITYNAME@ self, Entity component)
+        {
+        }
+        @IADDCOMPONENT_END@@IDESERIALIZE_BEGIN@private static void OnDeserialize(this @ENTITYNAME@ self)
+        {
+        }@IDESERIALIZE_END@
+        //Some Custom Logics
+        //public static void LogicFunction(this @ENTITYNAME@ self)
+        //{
+        //}
+    }
+}

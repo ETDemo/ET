@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8a20bb2eb9cc8498e57dc5b5284280, type: 3}
   m_Name: EntityGenerator
   m_EditorClassIdentifier: 
-  RootFolderType: 2
+  RootFolderType: 3
   SubFolderPath: GameDemo
-  NameSpace: 9
-  EntityName: 9
-  Interfaces: 214
-  EntitySingleton: 1
+  SubNameSpace: GameDemo
+  EntityName: TestEntity
+  Interfaces: 62
+  EntityType: 3
+  EntitySingleton: 0
+  OverwriteIfExist: 1
+  DontRefreshAfterGenerate: 0

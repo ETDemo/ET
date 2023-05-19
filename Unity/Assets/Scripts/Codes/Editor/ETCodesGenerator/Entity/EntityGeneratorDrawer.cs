@@ -1,12 +1,51 @@
 using System;
-using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
 
 namespace ET.ETCodesGenerator.Entity
 {
+    internal class EntityGeneratorWindow: EditorWindow
+    {
+        [MenuItem("ET/ETCodesGenerator/生成Entity代码")]
+        public static void OpenWindow()
+        {
+            var w = EditorWindow.GetWindow<EntityGeneratorWindow>();
+            w.titleContent = new GUIContent("生成Entity代码");
+            w.Show();
+        }
+
+        private EntityGenerator _so;
+        private EntityGenerator so => this._so ??= EditorGUIUtility.Load("ETCodesGenerator/EntityGenerator.asset") as EntityGenerator;
+
+        private Editor _drawer;
+        private Editor drawer => this._drawer ??= Editor.CreateEditor(this.so);
+
+        private Vector2 scrollPos = Vector2.zero;
+
+        private void OnGUI()
+        {
+            if (this.so == null)
+            {
+                GUILayout.Label("未找到 EntityGenerator 资源文件");
+                return;
+            }
+
+            using (var scroll = new EditorGUILayout.ScrollViewScope(scrollPos, false, false))
+            {
+                drawer.OnInspectorGUI();
+                scrollPos = scroll.scrollPosition;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (this.drawer != null)
+                DestroyImmediate(this.drawer);
+        }
+    }
+
     [CustomEditor(typeof (EntityGenerator))]
-    internal class EntityGeneratorDrawer: OdinEditor
+    internal class EntityGeneratorDrawer: Editor
     {
         public string errorMsg = string.Empty;
         public string msg = string.Empty;
@@ -26,11 +65,11 @@ namespace ET.ETCodesGenerator.Entity
             DrawMsg(this.msg, Color.yellow);
 
             GUILayout.Space(EditorGUIUtility.singleLineHeight / 2);
+            DrawMsg($"Entity脚本路径:\n{eg.GetEntityFilePath()}\n\nSystem脚本路径:\n{eg.GetSystemFilePath_Systems()}\n\n{eg.GetSystemFilePath_Logics()}",
+                Color.green);
+
             var oldColor = GUI.color;
             GUI.color = Color.green;
-            GUILayout.Label($"Entity脚本路径： {eg.GetEntityFilePath()}");
-            GUILayout.Label($"System脚本路径： {eg.GetSystemFilePath()}");
-
             var oldEnable = GUI.enabled;
             GUI.enabled = CanGenerate();
             GUILayout.Space(EditorGUIUtility.singleLineHeight / 2);

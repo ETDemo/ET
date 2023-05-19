@@ -1,0 +1,82 @@
+using System;
+
+namespace @NAMESPACE@
+{
+    [FriendOf(typeof (@ENTITYNAME@))]
+    public static partial class @ENTITYNAME@System
+    {
+        @IAWAKE_BEGIN@[ObjectSystem]
+        internal class @ENTITYNAME@AwakeSystem: AwakeSystem<@ENTITYNAME@>
+        {
+            protected override void Awake(@ENTITYNAME@ self)
+            {
+                @SINGLETON_BEGIN@
+                if (@ENTITYNAME@.Instance != null)
+                    throw new Exception("已存在单例:" + typeof (@ENTITYNAME@));
+                @ENTITYNAME@._instance = self;
+                @SINGLETON_END@
+                self.OnAwake();
+            }
+        }
+        @IAWAKE_END@@IUPDATE_BEGIN@[ObjectSystem]
+        internal class @ENTITYNAME@UpdateSystem: UpdateSystem<@ENTITYNAME@>
+        {
+            protected override void Update(@ENTITYNAME@ self)
+            {
+                self.OnUpdate();
+            }
+        }
+        @IUPDATE_END@@ILATEUPDATE_BEGIN@[ObjectSystem]
+        internal class @ENTITYNAME@LateUpdateSystem: LateUpdateSystem<@ENTITYNAME@>
+        {
+            protected override void LateUpdate(@ENTITYNAME@ self)
+            {
+                self.OnLateUpdate();
+            }
+        }
+        @ILATEUPDATE_END@@IDESTROY_BEGIN@[ObjectSystem]
+        internal class @ENTITYNAME@DestroySystem: DestroySystem<@ENTITYNAME@>
+        {
+            protected override void Destroy(@ENTITYNAME@ self)
+            {
+                self.OnDestroy();
+                @SINGLETON_BEGIN@
+                if (@ENTITYNAME@.Instance == self)
+                    @ENTITYNAME@._instance = null;
+                @SINGLETON_END@
+            }
+        }
+        @IDESTROY_END@ @ILOAD_BEGIN@[ObjectSystem]
+        internal class @ENTITYNAME@LoadSystem: LoadSystem<@ENTITYNAME@>
+        {
+            protected override void Load(@ENTITYNAME@ self)
+            {
+                self.OnLoad();
+            }
+        }
+        @ILOAD_END@@IGETCOMPONENT_BEGIN@[ObjectSystem]
+        internal class @ENTITYNAME@GetComponentSystem: GetComponentSystem<@ENTITYNAME@>
+        {
+            protected override void GetComponent(@ENTITYNAME@ self, Entity component)
+            {
+                self.OnGetComponent(component);
+            }
+        }
+        @IGETCOMPONENT_END@@IADDCOMPONENT_BEGIN@[ObjectSystem]
+        internal class @ENTITYNAME@AddComponentSystem: AddComponentSystem<@ENTITYNAME@>
+        {
+            protected override void AddComponent(@ENTITYNAME@ self, Entity component)
+            {
+                self.OnAddComponent(component);
+            }
+        }
+        @IADDCOMPONENT_END@@IDESERIALIZE_BEGIN@[ObjectSystem]
+        internal class @ENTITYNAME@DeserializeSystem: DeserializeSystem<@ENTITYNAME@>
+        {
+            protected override void Deserialize(@ENTITYNAME@ self)
+            {
+                self.OnDeserialize();
+            }
+        }@IDESERIALIZE_END@
+    }
+}

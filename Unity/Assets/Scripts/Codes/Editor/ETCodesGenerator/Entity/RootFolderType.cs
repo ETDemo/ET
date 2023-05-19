@@ -12,7 +12,7 @@ namespace ET.ETCodesGenerator.Entity
 
     public static class RootFolderTypeHelper
     {
-        public static string ToModelPath(this RootFolderType folderType) => folderType switch
+        public static string ToEntityPath(this RootFolderType folderType) => folderType switch
         {
             RootFolderType.Share => PathHelper.ShareModelFolder,
             RootFolderType.Server => PathHelper.ServerModelFolder,

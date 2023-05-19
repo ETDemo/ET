@@ -7,6 +7,8 @@ namespace ET.ETCodesGenerator
     [CreateAssetMenu(menuName = "ET/ETCodesGenerator/Setting", fileName = "Setting")]
     public class Setting: ScriptableObject
     {
-        public List<string> SubFolders = new List<string>();
+        public TextAsset EntityCodeTemplate;
+        public TextAsset EntitySystemCodeTemplate_System;
+        public TextAsset EntitySystemCodeTemplate_Logic;
     }
 }

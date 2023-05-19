@@ -1,0 +1,10 @@
+namespace @NAMESPACE@
+{
+    @ENTITYTYPE@
+    public class @ENTITYNAME@ : Entity @INTERFACES@
+    {
+        @SINGLETON_BEGIN@[StaticField]
+        public static @ENTITYNAME@ _instance;
+        public static @ENTITYNAME@ Instance => _instance;@SINGLETON_END@
+    }
+}

@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a6893bb9c324e40859bace6f059c91, type: 3}
   m_Name: ETCodesGeneratorSetting
   m_EditorClassIdentifier: 
+  EntityCodeTemplate: {fileID: 4900000, guid: 2c5cca26e918a894d90c466df7dba1f5, type: 3}
+  EntitySystemCodeTemplate_System: {fileID: 4900000, guid: 5315920455ea0f6438f59260843332b4,
+    type: 3}
+  EntitySystemCodeTemplate_Logic: {fileID: 4900000, guid: a13bc08c35063974f8d8e16e69b6396b,
+    type: 3}
