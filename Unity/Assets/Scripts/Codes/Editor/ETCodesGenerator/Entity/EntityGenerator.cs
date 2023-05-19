@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace ET.ETCodesGenerator.Entity
 {
@@ -12,7 +13,7 @@ namespace ET.ETCodesGenerator.Entity
     {
         public RootFolderType RootFolderType;
 
-        [CodesSubFolder("$_ModelFolderPath")]
+        [InlineButton("SelectSubFolder", ButtonName = "Select")]
         public string SubFolderPath;
 
         public string SubNameSpace = "YouProjectName";
@@ -22,7 +23,6 @@ namespace ET.ETCodesGenerator.Entity
         public bool EntitySingleton;
         public bool OverwriteIfExist;
         public bool DontRefreshAfterGenerate;
-        private string _ModelFolderPath => RootFolderType.ToEntityPath();
 
         private Setting _setting;
         private Setting setting => this._setting ??= EditorGUIUtility.Load("ETCodesGenerator/ETCodesGeneratorSetting.asset") as Setting;
@@ -257,6 +257,39 @@ namespace ET.ETCodesGenerator.Entity
         {
             string pattern = $"(?<={stringA}).*?(?={stringB})";
             return Regex.Replace(text, pattern, replaceWith, RegexOptions.Singleline);
+        }
+
+        private void SelectSubFolder()
+        {
+            var parentFolderPath = this.RootFolderType.ToEntityPath();
+            var select = EditorUtility.OpenFolderPanel("Select SubFolder", parentFolderPath, "");
+            if (!string.IsNullOrEmpty(select))
+            {
+                if (select.StartsWith(parentFolderPath))
+                {
+                    var value = select.Replace(parentFolderPath, "").TrimStart('/');
+                    this.SubFolderPath = value;
+                }
+                else
+                {
+                    Debug.LogError("只能选择指定目录的子目录");
+                }
+            }
+        }
+
+        private void PingRootFolder()
+        {
+            var p1 = this.RootFolderType.ToEntityPath();
+            var sub1 = "Assets" + p1.Substring(Application.dataPath.Length, p1.Length - Application.dataPath.Length);
+            var f1 = AssetDatabase.LoadAssetAtPath<Object>(sub1);
+            EditorGUIUtility.PingObject(f1);
+
+            var p2 = this.RootFolderType.ToSystemPath();
+            var sub2 = "Assets" + p2.Substring(Application.dataPath.Length, p2.Length - Application.dataPath.Length);
+            var f2 = AssetDatabase.LoadAssetAtPath<Object>(sub2);
+            EditorGUIUtility.PingObject(f2);
+
+            Debug.Log(sub1 + "  " + sub2);
         }
     }
 }

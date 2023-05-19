@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -47,7 +46,6 @@ namespace ET.ETCodesGenerator.Entity
     [CustomEditor(typeof (EntityGenerator))]
     internal class EntityGeneratorDrawer: Editor
     {
-        public string errorMsg = string.Empty;
         public string msg = string.Empty;
 
         public override void OnInspectorGUI()
@@ -75,22 +73,11 @@ namespace ET.ETCodesGenerator.Entity
             GUILayout.Space(EditorGUIUtility.singleLineHeight / 2);
             if (GUILayout.Button("Generate", GUILayout.Height(EditorGUIUtility.singleLineHeight * 2)))
             {
-                try
-                {
-                    eg.Generate();
-                    errorMsg = string.Empty;
-                }
-                catch (Exception e)
-                {
-                    errorMsg = e.Message;
-                    throw;
-                }
+                eg.Generate();
             }
 
             GUI.enabled = oldEnable;
             GUI.color = oldColor;
-
-            DrawMsg(this.errorMsg, Color.red);
         }
 
         private void DrawMsg(string message, Color color)
