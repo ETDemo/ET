@@ -46,7 +46,7 @@ namespace @NAMESPACE@
                 @SINGLETON_END@
             }
         }
-        @IDESTROY_END@ @ILOAD_BEGIN@[ObjectSystem]
+        @IDESTROY_END@@ILOAD_BEGIN@[ObjectSystem]
         internal class @ENTITYNAME@LoadSystem: LoadSystem<@ENTITYNAME@>
         {
             protected override void Load(@ENTITYNAME@ self)

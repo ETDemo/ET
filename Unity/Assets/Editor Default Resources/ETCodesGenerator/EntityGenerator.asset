@@ -16,8 +16,9 @@ MonoBehaviour:
   SubFolderPath: GameDemo
   SubNameSpace: GameDemo
   EntityName: TestEntity
-  Interfaces: 62
-  EntityType: 3
-  EntitySingleton: 0
+  Interfaces: 4294967295
+  EntityType: 1
+  EntitySingleton: 1
   OverwriteIfExist: 1
   DontRefreshAfterGenerate: 0
+  OpenAfterGenerate: 0

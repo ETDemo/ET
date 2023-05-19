@@ -23,6 +23,7 @@ namespace ET.ETCodesGenerator.Entity
         public bool EntitySingleton;
         public bool OverwriteIfExist;
         public bool DontRefreshAfterGenerate;
+        public bool OpenAfterGenerate;
 
         private Setting _setting;
         private Setting setting => this._setting ??= EditorGUIUtility.Load("ETCodesGenerator/ETCodesGeneratorSetting.asset") as Setting;
@@ -43,6 +44,12 @@ namespace ET.ETCodesGenerator.Entity
                 this.GenerateEntity();
                 this.GenerateSystem();
                 this.GenerateSystemLogic();
+
+                if (OpenAfterGenerate)
+                {
+                    EditorUtility.OpenWithDefaultApp(this.GetEntityFilePath());
+                    EditorUtility.OpenWithDefaultApp(this.GetSystemFilePath_Logics());
+                }
             }
             finally
             {
